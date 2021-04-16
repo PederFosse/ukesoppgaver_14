@@ -1,0 +1,11 @@
+CREATE TABLE Car
+(
+    id INTEGER AUTO_INCREMENT NOT NULL,
+    pnr VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    plate_number VARCHAR(255) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id)
+);
