@@ -24,7 +24,7 @@ public class CarController {
         String regexAddress = "[0-9a-zA-ZæøåÆØÅ. \\-]{2,50}";
         String regexPlateNumber = "[A-Z]{2}[0-9]{5}";
         String regexBrand = "[0-9a-zA-ZæøåÆØÅ. \\-]{2,30}";
-        String regexType = "[a-zA-ZæøåÆØÅ. \\-]{2,30}";
+        String regexType = "[0-9a-zA-ZæøåÆØÅ. \\-]{2,30}";
 
         boolean pnrOk = car.getPnr().matches(regexPnr);
         boolean nameOk = car.getName().matches(regexName);

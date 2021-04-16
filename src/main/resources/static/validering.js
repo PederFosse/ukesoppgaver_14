@@ -67,10 +67,10 @@ function checkValidBrand(brand) {
 }
 
 function checkValidType(type) {
-    const regexpType = /^[a-zA-ZæøåÆØÅ. \-]{2,30}$/;
+    const regexpType = /^[0-9a-zA-ZæøåÆØÅ. \-]{2,30}$/;
     const typeOk = regexpType.test(type);
     if (!typeOk) {
-        $("#invalid-type").html("Type, 2-30 bokstaver eller symboler");
+        $("#invalid-type").html("Type, 2-30 bokstaver/tall/symboler");
     } else {
         $("#invalid-type").html("");
     }
