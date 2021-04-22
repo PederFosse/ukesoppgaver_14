@@ -59,3 +59,9 @@ function createCarObject () {
         type: $('#type').val(),
     }
 }
+
+function login() {
+    $.post("/login", {username: "peder", password: "passord"}, () => {
+        getCars();
+    })
+}

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,7 +15,10 @@ import java.util.List;
 public class CarController {
 
     @Autowired
-    CarRepository rep;
+    private CarRepository rep;
+
+    @Autowired
+    private HttpSession session;
 
     Logger logger = LoggerFactory.getLogger(CarController.class);
 
@@ -44,6 +48,7 @@ public class CarController {
     // Create a new car
     @PostMapping("/cars")
     public void addCar(Car car, HttpServletResponse res) throws IOException {
+        System.out.println(car.getPnr());
         if (!validateCar(car)) {
             res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not validate car.");
         } else {
@@ -61,7 +66,12 @@ public class CarController {
 
     // Get all cars
     @GetMapping("/cars")
-    public List<Car> getCars() { return rep.getCars(); }
+    public List<Car> getCars() {
+        if (session.getAttribute("LoggedIn") != null) {
+            return rep.getCars();
+        }
+        return null;
+    }
 
     // Delete all cars
     @PostMapping("/cars/delete")

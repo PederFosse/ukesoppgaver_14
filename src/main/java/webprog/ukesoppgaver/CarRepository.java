@@ -39,7 +39,8 @@ public class CarRepository {
 
     public List<Car> getCars() {
         String sql = "SELECT * FROM Car";
-        return db.query(sql, new BeanPropertyRowMapper(Car.class));
+        List<Car> cars = db.query(sql, new BeanPropertyRowMapper(Car.class));
+        return cars;
     }
 
     public boolean deleteByPk(int id) {
