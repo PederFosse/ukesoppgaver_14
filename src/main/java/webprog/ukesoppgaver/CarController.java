@@ -40,7 +40,7 @@ public class CarController {
         if (pnrOk && nameOk && addressOk && plateNumberOk && brandOk && typeOk) {
             return true;
         } else {
-            logger.error("validtae car failed");
+            logger.error("validate car failed");
             return false;
         }
     }
@@ -48,14 +48,19 @@ public class CarController {
     // Create a new car
     @PostMapping("/cars")
     public void addCar(Car car, HttpServletResponse res) throws IOException {
-        System.out.println(car.getPnr());
-        if (!validateCar(car)) {
-            res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not validate car.");
-        } else {
-            if (!rep.addCar(car)) {
-                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not add car to database, try again later.");
+        if (session.getAttribute("LoggedIn") != null) { // check if user is logged in
+            if (!validateCar(car)) {
+                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not validate car.");
+            } else {
+                if (!rep.addCar(car)) {
+                    res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not add car to database, try again later.");
+                }
             }
+        } else {
+            // user is not logged in
+            res.sendError(HttpStatus.FORBIDDEN.value(), "not allowed to add a new car");
         }
+
     }
 
     // Get car by id
@@ -67,37 +72,49 @@ public class CarController {
     // Get all cars
     @GetMapping("/cars")
     public List<Car> getCars() {
-        if (session.getAttribute("LoggedIn") != null) {
-            return rep.getCars();
-        }
-        return null;
+        return rep.getCars();
     }
 
     // Delete all cars
     @PostMapping("/cars/delete")
     public void deleteAll(HttpServletResponse res) throws IOException {
-        if (!rep.deleteAll()) {
-            res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not delete all cars. Try again later.");
+        if (session.getAttribute("LoggedIn") != null) { // check if user is logged in
+            if (!rep.deleteAll()) {
+                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not delete all cars. Try again later.");
+            }
+        } else {
+            // user is not logged in
+            res.sendError(HttpStatus.FORBIDDEN.value(), "not allowed to delete all cars");
         }
     }
 
     // Delete car by id
     @PostMapping("/cars/{id}/delete")
     public void deleteByPk(HttpServletResponse res, @PathVariable("id") int id) throws IOException {
-        if (!rep.deleteByPk(id)) {
-            res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not delete car with id: " + id + ". Try again later");
+        if (session.getAttribute("LoggedIn") != null) { // check if user is logged in
+            if (!rep.deleteByPk(id)) {
+                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not delete car with id: " + id + ". Try again later");
+            }
+        } else {
+            // user is not logged in
+            res.sendError(HttpStatus.FORBIDDEN.value(), "not allowed to delete car");
         }
     }
 
     // Edit car by id
     @PostMapping("/cars/{id}/edit")
     public void editCar(Car car, @PathVariable("id") int id, HttpServletResponse res) throws IOException {
-        if (validateCar(car)) {
-            res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not validate car.");
-        } else {
-            if (!rep.editCar(car, id)) {
-                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not update car with id: " + id + ". Try again later");
+        if (session.getAttribute("LoggedIn") != null) { // check if user is logged in
+            if (validateCar(car)) {
+                res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not validate car.");
+            } else {
+                if (!rep.editCar(car, id)) {
+                    res.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Could not update car with id: " + id + ". Try again later");
+                }
             }
+        } else {
+            // user is not logged in
+            res.sendError(HttpStatus.FORBIDDEN.value(), "not allowed to edit car");
         }
     }
 }

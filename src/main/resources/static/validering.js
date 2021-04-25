@@ -76,3 +76,46 @@ function checkValidType(type) {
     }
     return typeOk;
 }
+
+// validate user
+function validateUser(user) {
+    const usernameOk = checkValidUsername(user.username);
+    const passwordOk = checkValidPassword(user.password);
+
+    return usernameOk && passwordOk;
+}
+
+function checkValidUsername(username) {
+    const regexpUsername = /^[a-zA-ZæøåÆØÅ. \-]{2,30}$/;
+    const usernameOk = regexpUsername.test(username);
+    if (!usernameOk) {
+        // invalid username
+        $("#invalid-username").html("Username, 2-30 letters");
+    } else {
+        // valid username
+        $("#invalid-username").html("");
+    }
+    return usernameOk;
+}
+
+function checkValidPassword(password) {
+    const regexpPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordOk = regexpPassword.test(password);
+
+    if (!passwordOk) {
+        // not a valid password format
+        $("#invalid-password").html("Password, Minimum eight characters, at least one letter and one number");
+    } else {
+        // valid password format
+        $("#invalid-password").html("")
+    }
+
+    return passwordOk;
+}
+
+// check if user is logged in
+function isLoggedIn() {
+    $.get("/users/isLoggedIn", (isLoggedIn) => {
+        return isLoggedIn;
+    });
+}

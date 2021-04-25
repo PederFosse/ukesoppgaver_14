@@ -1,5 +1,7 @@
 $(function () {
-    renderCarInfo(); // retrieve the car we want to update
+    $.get("/users/isLoggedIn", (isLoggedIn) => {
+        isLoggedIn ? renderCarInfo() : window.location.href="/";
+    })
 })
 
 function editCar(event) {

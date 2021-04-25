@@ -3,4 +3,4 @@ INSERT INTO Car (pnr, name, address, plate_number, brand, type) VALUES
 (30049839482, 'Oscar', 'Solli', 'JU59560', 'AUDI', 'GTE'),
 (51026649374, 'Eirik', 'Sjørøverland', 'ZZ88888', 'PORSCHE', '911 CARRERA S');
 
-INSERT INTO User (username, password) VALUES ('peder', 'passord');
+INSERT INTO User (username, password) VALUES ('peder', '$2a$14$y9vBNUvyZBVpRaxugc2IYuFBhtSZWpuCC3FjnXmk17g5FeFzwbwc2');
